@@ -4,13 +4,13 @@
 #define ML_2_PIN 5
 #define ML_PWM_PIN 6
 
-int pos_n = 0;
+int count_actual = 0;
 int pwm_L = 0;
 
-int target = 5800;
-float kp = 0.9;
-float ki = 10.0;
-float kd = 0.1;
+int count_target = 725;
+float kp = 0.52; // 0.5
+float ki = 0.00625; // 0.3  0.00625
+float kd = 0.03; // 0.03
 float u = 0.0;
 
 int e = 0;
@@ -41,20 +41,25 @@ void setup() {
 }
 
 void loop() {
-  
   noInterrupts();
-  pos_n = pos;
+  count_actual = pos;
   interrupts();
 
-  e = target - pos_n;
+  e = count_target - count_actual;
 
   t_curr = micros();
   dt = (float)(t_curr - t_prev)/1.0e6;
   t_prev = t_curr;
 
-  e_integral = e_integral + ki*e*dt;
-
-  e_integral = constrain(e_integral, -100, 100);
+  if(abs(e) <= 725)
+  {
+    e_integral = e_integral + ki*e*dt;
+    e_integral = constrain(e_integral, -150, 150);
+  }
+  else
+  {
+    e_integral = 0;
+  }
 
   u = (int)(kp*e + e_integral + kd*(e - e_prev)/dt);
   u = constrain(u, -200, 200);
@@ -72,40 +77,18 @@ void loop() {
   analogWrite(ML_PWM_PIN, abs(u));
 
   Serial.print(0);
-  Serial.print(" ");
-  Serial.print(pos_n);
-  Serial.print(" ");
-  Serial.print(target);
-  Serial.print(" ");
+  Serial.print(",");
+  Serial.print(count_target);
+  Serial.print(",");
+  Serial.print(count_actual);
+  Serial.print(",");
+  // Serial.print(e);
+  // Serial.print(",");
   Serial.println(u);
 
   e_prev = e;
   delay(5);
-  
-  // if (Serial.available()>0)
-  // {
-  //   String s = Serial.readString();
-  //   pwm_L = s.toInt();
-  // }
-  // pwm_L = constrain(pwm_L, -255, 255);
 
-  // if (pwm_L>0)
-  // {
-  //   digitalWrite(ML_1_PIN, HIGH);
-  //   digitalWrite(ML_2_PIN, LOW);
-  // }
-  // else
-  // {
-  //   digitalWrite(ML_1_PIN, LOW);
-  //   digitalWrite(ML_2_PIN, HIGH);
-  // }
-  // analogWrite(ML_PWM_PIN, abs(pwm_L));
-
-  // noInterrupts();
-  // pos_n = pos;
-  // interrupts();
-
-  // Serial.println(pos_n);
 }
 
 void readEncoder()
