@@ -7,7 +7,7 @@
 int count_actual = 0;
 int pwm_L = 0;
 
-int count_target = 725;
+int count_target = 1000;
 float kp = 0.52; // 0.5
 float ki = 0.00625; // 0.3  0.00625
 float kd = 0.03; // 0.03
