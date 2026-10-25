@@ -85,14 +85,14 @@ void TB6612FNG::disableMotorB()
 void TB6612FNG::enableMotorA()
 {
   digitalWrite(m_pinINA_1, HIGH);
-  digitalWrite(m_pinINA_2, HIGH);
+  digitalWrite(m_pinINA_2, LOW);
   analogWrite(m_pinPWM_A, 0);
 }
 
 void TB6612FNG::enableMotorB()
 {
   digitalWrite(m_pinINB_1, HIGH);
-  digitalWrite(m_pinINB_2, HIGH);
+  digitalWrite(m_pinINB_2, LOW);
   analogWrite(m_pinPWM_B, 0);
 }
 
