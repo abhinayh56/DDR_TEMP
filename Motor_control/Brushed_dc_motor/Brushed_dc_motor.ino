@@ -25,8 +25,8 @@ void loop()
 {
   while(Serial.available() > 0)
   {
-    voltInMotorA = Serial.readString().toDouble();
-    // voltInMotorB = Serial.readString().toDouble();
+    // voltInMotorA = Serial.readString().toDouble();
+    voltInMotorB = Serial.readString().toDouble();
   }
   
   Serial.print(voltInMotorA);
