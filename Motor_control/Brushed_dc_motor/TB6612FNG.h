@@ -4,7 +4,8 @@
 #include <Arduino.h>
 #include <stdint.h>
 
-class TB6612FNG {
+class TB6612FNG
+{
 public:
   TB6612FNG();
 
