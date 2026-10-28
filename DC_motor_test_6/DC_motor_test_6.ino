@@ -23,9 +23,9 @@ double tau = 1.0/(2.0*PI*fc);
 
 double w_target = 0.0 * PI / 180.0; // [-620, 620] deg/s
 double u = 0.0;
-double kp = 20; //42.0
-double ki = 0.0; //300.0
-double kd = 0.0; //0.1
+double kp = 42.0; //42.0
+double ki = 300.0; //300.0
+double kd = 0.1; //0.1
 double e = 0.0;
 double e_prev = 0.0;
 double e_integral = 0.0;
@@ -35,8 +35,6 @@ volatile int a = false;
 volatile int a_prev = false;
 volatile int b = false;
 volatile int b_prev = false;
-
-double user_input = 0;
 
 void setup()
 {
@@ -63,11 +61,6 @@ void setup()
 
 void loop()
 {
-  while(Serial.available() > 0)
-  {
-    w_target = Serial.readString().toDouble() * PI / 180.0;
-  }
-
   noInterrupts();
   pos_n = pos;
   interrupts();

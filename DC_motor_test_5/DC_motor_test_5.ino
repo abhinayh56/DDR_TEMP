@@ -1,8 +1,8 @@
 #define ENCL_A_PIN 2
 #define ENCL_B_PIN 3
-#define ML_1_PIN 4
+#define ML_PWM_PIN 4
+#define ML_1_PIN 6
 #define ML_2_PIN 5
-#define ML_PWM_PIN 6
 #define CPR 5800
 #define PI 3.1415926
 
@@ -21,7 +21,7 @@ double alpha = 0.0;
 double fc = 12.0;
 double tau = 1.0/(2.0*PI*fc);
 
-double w_target = 0 * PI / 180.0; // [-620, 620] deg/s
+double w_target = 0.0 * PI / 180.0; // [-620, 620] deg/s
 double u = 0.0;
 double kp = 42;
 double ki = 300; //200
@@ -44,6 +44,11 @@ void setup()
   pinMode(ML_1_PIN, OUTPUT);
   pinMode(ML_2_PIN, OUTPUT);
   pinMode(ML_PWM_PIN, OUTPUT);
+
+  // Turn off motors - Initial state
+  digitalWrite(ML_1_PIN, LOW);
+  digitalWrite(ML_2_PIN, LOW);
+
   pinMode(ENCL_A_PIN, INPUT);
   pinMode(ENCL_B_PIN, INPUT);
 
