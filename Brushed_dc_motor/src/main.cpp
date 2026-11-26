@@ -79,19 +79,19 @@ void loop()
     target_W_motorB = target_W_motorA;
   }
   
-  u_motorA = controllerMotorA.update(target_W_motorA, actual_W_motorA_filt);
+  u_motorA = 0*controllerMotorA.update(target_W_motorA, actual_W_motorA_filt);
   u_motorB = controllerMotorB.update(target_W_motorB, actual_W_motorB_filt);
 
   motorDriver.commandMotorA(u_motorA);
   motorDriver.commandMotorB(u_motorB);
 
-  // Serial.print(target_W_motorB * RAD_TO_DEG);
-  // Serial.print(",");
-  // Serial.print(actual_W_motorB_filt * RAD_TO_DEG);
-  // Serial.print(",");
-  // Serial.print(u_motorB);
-  // Serial.print(",");
-  // Serial.println(0);
+  Serial.print(target_W_motorB * RAD_TO_DEG);
+  Serial.print(",");
+  Serial.print(actual_W_motorB_filt * RAD_TO_DEG);
+  Serial.print(",");
+  Serial.print(u_motorB);
+  Serial.print(",");
+  Serial.println(0);
 
   timer.sleep();
 }
