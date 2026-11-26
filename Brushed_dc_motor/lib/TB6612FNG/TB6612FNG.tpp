@@ -1,21 +1,25 @@
 #include "TB6612FNG.h"
 
-TB6612FNG::TB6612FNG()
+template <typename T>
+TB6612FNG<T>::TB6612FNG()
 {
 }
 
-TB6612FNG::~TB6612FNG()
+template <typename T>
+TB6612FNG<T>::~TB6612FNG()
 {
 }
 
-void TB6612FNG::config(uint8_t pinStandby, double voltInDriver, uint16_t pwmMax)
+template <typename T>
+void TB6612FNG<T>::config(uint8_t pinStandby, T voltInDriver, uint16_t pwmMax)
 {
   m_pinStandby = pinStandby;
   m_voltInDriver = voltInDriver;
   m_pwmMax = pwmMax;
 }
 
-void TB6612FNG::configMotorA(uint8_t pinPWM_A, uint8_t pinINA_1, uint8_t pinINA_2, bool reverse)
+template <typename T>
+void TB6612FNG<T>::configMotorA(uint8_t pinPWM_A, uint8_t pinINA_1, uint8_t pinINA_2, bool reverse)
 {
   m_pinPWM_A = pinPWM_A;
   m_reverseMotorA = reverse;
@@ -23,7 +27,8 @@ void TB6612FNG::configMotorA(uint8_t pinPWM_A, uint8_t pinINA_1, uint8_t pinINA_
   m_pinINA_2 = pinINA_2;
 }
 
-void TB6612FNG::configMotorB(uint8_t pinPWM_B, uint8_t pinINB_1, uint8_t pinINB_2, bool reverse)
+template <typename T>
+void TB6612FNG<T>::configMotorB(uint8_t pinPWM_B, uint8_t pinINB_1, uint8_t pinINB_2, bool reverse)
 {
   m_pinPWM_B = pinPWM_B;
   m_reverseMotorB = reverse;
@@ -31,54 +36,62 @@ void TB6612FNG::configMotorB(uint8_t pinPWM_B, uint8_t pinINB_1, uint8_t pinINB_
   m_pinINB_2 = pinINB_2;
 }
 
-void TB6612FNG::init()
+template <typename T>
+void TB6612FNG<T>::init()
 {
   digitalWrite(m_pinStandby, HIGH);
 }
 
-void TB6612FNG::initMotorA()
+template <typename T>
+void TB6612FNG<T>::initMotorA()
 {
   pinMode(m_pinPWM_A, OUTPUT);
   pinMode(m_pinINA_1, OUTPUT);
   pinMode(m_pinINA_2, OUTPUT);
 }
 
-void TB6612FNG::initMotorB()
+template <typename T>
+void TB6612FNG<T>::initMotorB()
 {
   pinMode(m_pinPWM_B, OUTPUT);
   pinMode(m_pinINB_1, OUTPUT);
   pinMode(m_pinINB_2, OUTPUT);
 }
 
-void TB6612FNG::disableMotorA()
+template <typename T>
+void TB6612FNG<T>::disableMotorA()
 {
   digitalWrite(m_pinINA_1, LOW);
   digitalWrite(m_pinINA_2, LOW);
   analogWrite(m_pinPWM_A, 0);
 }
 
-void TB6612FNG::disableMotorB()
+template <typename T>
+void TB6612FNG<T>::disableMotorB()
 {
   digitalWrite(m_pinINB_1, LOW);
   digitalWrite(m_pinINB_2, LOW);
   analogWrite(m_pinPWM_B, 0);
 }
 
-void TB6612FNG::enableMotorA()
+template <typename T>
+void TB6612FNG<T>::enableMotorA()
 {
   digitalWrite(m_pinINA_1, HIGH);
   digitalWrite(m_pinINA_2, LOW);
   analogWrite(m_pinPWM_A, 0);
 }
 
-void TB6612FNG::enableMotorB()
+template <typename T>
+void TB6612FNG<T>::enableMotorB()
 {
   digitalWrite(m_pinINB_1, HIGH);
   digitalWrite(m_pinINB_2, LOW);
   analogWrite(m_pinPWM_B, 0);
 }
 
-void TB6612FNG::commandMotorA(double voltInMotorA)
+template <typename T>
+void TB6612FNG<T>::commandMotorA(T voltInMotorA)
 {
   voltInMotorA = voltInMotorA * ((m_reverseMotorA == true) ? -1 : 1);
   voltInMotorA = constrain(voltInMotorA, -m_voltInDriver, m_voltInDriver);
@@ -95,10 +108,11 @@ void TB6612FNG::commandMotorA(double voltInMotorA)
     digitalWrite(m_pinINA_2, HIGH);
   }
 
-  analogWrite(m_pinPWM_A, constrain(static_cast<int>(voltInMotorA * static_cast<double>(m_pwmMax) / m_voltInDriver), static_cast<int>(0), static_cast<int>(m_pwmMax)));
+  analogWrite(m_pinPWM_A, constrain(static_cast<int>(voltInMotorA * static_cast<T>(m_pwmMax) / m_voltInDriver), static_cast<int>(0), static_cast<int>(m_pwmMax)));
 }
 
-void TB6612FNG::commandMotorB(double voltInMotorB)
+template <typename T>
+void TB6612FNG<T>::commandMotorB(T voltInMotorB)
 {
   voltInMotorB = voltInMotorB * ((m_reverseMotorB == true) ? -1 : 1);
   voltInMotorB = constrain(voltInMotorB, -m_voltInDriver, m_voltInDriver);
@@ -115,10 +129,11 @@ void TB6612FNG::commandMotorB(double voltInMotorB)
     digitalWrite(m_pinINB_2, HIGH);
   }
   
-  analogWrite(m_pinPWM_B, constrain(static_cast<int>(voltInMotorB * static_cast<double>(m_pwmMax) / m_voltInDriver), static_cast<int>(0), static_cast<int>(m_pwmMax)));
+  analogWrite(m_pinPWM_B, constrain(static_cast<int>(voltInMotorB * static_cast<T>(m_pwmMax) / m_voltInDriver), static_cast<int>(0), static_cast<int>(m_pwmMax)));
 }
 
-void TB6612FNG::eStopDrive()
+template <typename T>
+void TB6612FNG<T>::eStopDrive()
 {
   digitalWrite(m_pinStandby, LOW);
 
@@ -130,7 +145,8 @@ void TB6612FNG::eStopDrive()
   analogWrite(m_pinPWM_B, 0);
 }
 
-void TB6612FNG::enableDrive()
+template <typename T>
+void TB6612FNG<T>::enableDrive()
 {
   digitalWrite(m_pinStandby, HIGH);
 

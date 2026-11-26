@@ -7,11 +7,11 @@
 
 #define MAIN_LOOP_FREQ 250.0
 
-Timer_utils timer(MAIN_LOOP_FREQ);
+Timer_utils<double> timer(MAIN_LOOP_FREQ);
 
-TB6612FNG motorDriver;
-Quadrature_enc encoderMotorA;
-Quadrature_enc encoderMotorB;
+TB6612FNG<double> motorDriver;
+Quadrature_enc<double> encoderMotorA;
+Quadrature_enc<double> encoderMotorB;
 
 LPF_1<double> lpf_wMotorA;
 LPF_1<double> lpf_wMotorB;

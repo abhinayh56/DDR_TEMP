@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <stdint.h>
 
+template <typename T>
 class TB6612FNG
 {
 public:
@@ -11,7 +12,7 @@ public:
 
   ~TB6612FNG();
 
-  void config(uint8_t pinStandby, double voltInDriver, uint16_t pwmMax);
+  void config(uint8_t pinStandby, T voltInDriver, uint16_t pwmMax);
 
   void configMotorA(uint8_t pinPWM_A, uint8_t pinINA_1, uint8_t pinINA_2, bool reverse);
 
@@ -31,9 +32,9 @@ public:
 
   void enableMotorB();
 
-  void commandMotorA(double voltInMotorA);
+  void commandMotorA(T voltInMotorA);
 
-  void commandMotorB(double voltInMotorB);
+  void commandMotorB(T voltInMotorB);
 
   void eStopDrive();
 
@@ -53,9 +54,11 @@ private:
   bool m_reverseMotorA;
   bool m_reverseMotorB;
 
-  double m_voltInDriver;
+  T m_voltInDriver;
 
   uint16_t m_pwmMax;
 };
+
+#include "TB6612FNG.tpp"
 
 #endif  // TB6612FNG_H

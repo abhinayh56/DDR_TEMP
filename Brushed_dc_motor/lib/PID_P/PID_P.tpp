@@ -49,8 +49,8 @@ T PID_P<T>::update(T x_0, T x, T u_ff_)
 
     P = Kp * e_k;
 
-    T I_temp = I + Ki * e_k * dt;
-    I_temp = saturate(I_temp, -I_max, I_max);
+    I = I + Ki * e_k * dt;
+    I = saturate(I, -I_max, I_max);
 
     if (start == true)
     {
@@ -67,14 +67,7 @@ T PID_P<T>::update(T x_0, T x, T u_ff_)
         D = lpf.update(D);
     }
     e_k_1 = e_k;
-    
-    T u_temp = u_ff + P + I_temp + D;
-    if(!((u_temp > u_max) && e_k > T(0)) && !((u_temp < -u_max) && e_k < T(0)))
-    {
-        I = I_temp;
-    }
     u = u_ff + P + I + D;
-
     u = saturate<T>(u, -u_max, u_max);
     return u;
 }
